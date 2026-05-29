@@ -427,8 +427,8 @@
       },
     });
 
-    var videoCards = document.querySelectorAll('.video-card');
-    gsap.to(videoCards, {
+    var portfolioCards = document.querySelectorAll('.portfolio__grid .video-card');
+    gsap.to(portfolioCards, {
       opacity: 1,
       y: 0,
       duration: 0.6,
@@ -436,6 +436,37 @@
       ease: 'power2.out',
       scrollTrigger: {
         trigger: '.portfolio__grid',
+        start: 'top 78%',
+        toggleActions: 'play none none none',
+      },
+    });
+
+    // Demos section
+    var demosHeaders = document.querySelectorAll(
+      '.demos > .container > [data-stagger]'
+    );
+    gsap.to(demosHeaders, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.demos',
+        start: 'top 75%',
+        toggleActions: 'play none none none',
+      },
+    });
+
+    var demoCards = document.querySelectorAll('.demos__grid .video-card');
+    gsap.to(demoCards, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.demos__grid',
         start: 'top 78%',
         toggleActions: 'play none none none',
       },
@@ -527,6 +558,20 @@
     });
   }
 
+  /* --- Description Accordion --- */
+
+  function initAccordion() {
+    var expandToggles = document.querySelectorAll('.video-card__see-more');
+
+    expandToggles.forEach(function (toggle) {
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var expandWrapper = toggle.closest('.video-card__expand');
+        expandWrapper.classList.toggle('is-open');
+      });
+    });
+  }
+
   /* --- Video Modal --- */
 
   function initVideoModal() {
@@ -559,16 +604,19 @@
     }
 
     cards.forEach(function (card) {
-      function handleClick() {
+      function handleClick(e) {
+        if (e.target.closest('.video-card__expand')) return;
         var videoSrc = card.getAttribute('data-video');
         if (videoSrc) openModal(videoSrc);
       }
 
       card.addEventListener('click', handleClick);
       card.addEventListener('keydown', function (e) {
+        if (e.target.closest('.video-card__expand')) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          handleClick();
+          var videoSrc = card.getAttribute('data-video');
+          if (videoSrc) openModal(videoSrc);
         }
       });
     });
@@ -595,6 +643,7 @@
       initScrollAnimations();
       initParallax();
       initMicroInteractions();
+      initAccordion();
       initVideoModal();
     });
   });
