@@ -232,6 +232,7 @@
     // Animate subheadline and CTA
     var subheadline = document.querySelector('.hero__subheadline');
     var heroCta = document.querySelector('.hero__cta');
+    var secondaryCta = document.querySelector('.hero__secondary-cta');
 
     gsap.to(subheadline, {
       opacity: 1,
@@ -248,6 +249,74 @@
       ease: 'power2.out',
       delay: 1.0,
     });
+
+    if (secondaryCta) {
+      gsap.to(secondaryCta, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 1.15,
+      });
+    }
+  }
+
+  /* --- Sticky Nav --- */
+
+  function initStickyNav() {
+    var nav = document.getElementById('stickyNav');
+    if (!nav) return;
+
+    var lastScrollY = 0;
+    var scrollThreshold = 100;
+
+    function handleScroll() {
+      var currentScrollY = window.scrollY;
+
+      if (currentScrollY > scrollThreshold) {
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down — hide
+          nav.classList.add('nav--hidden');
+        } else {
+          // Scrolling up — show
+          nav.classList.remove('nav--hidden');
+        }
+      } else {
+        nav.classList.remove('nav--hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+
+  /* --- FAQ Accordion --- */
+
+  function initFaqAccordion() {
+    var faqItems = document.querySelectorAll('.faq__item');
+
+    faqItems.forEach(function (item) {
+      var question = item.querySelector('.faq__question');
+      if (!question) return;
+
+      question.addEventListener('click', function () {
+        var isOpen = item.classList.contains('is-open');
+
+        // Close all other items
+        faqItems.forEach(function (otherItem) {
+          otherItem.classList.remove('is-open');
+          var otherBtn = otherItem.querySelector('.faq__question');
+          if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle current
+        if (!isOpen) {
+          item.classList.add('is-open');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
 
   /* --- Scroll Animations --- */
@@ -256,6 +325,23 @@
     if (state.reducedMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
+
+    // Metrics section
+    var metricsItems = document.querySelectorAll('.metrics__item');
+    if (metricsItems.length) {
+      gsap.to(metricsItems, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.metrics',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
     // Problem section
     var problemText = document.querySelectorAll(
@@ -320,6 +406,41 @@
       },
     });
 
+    // How It Works section
+    var howHeaders = document.querySelectorAll(
+      '.how-it-works > .container > [data-stagger]'
+    );
+    if (howHeaders.length) {
+      gsap.to(howHeaders, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.how-it-works',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var howSteps = document.querySelectorAll('.how-it-works__step');
+    if (howSteps.length) {
+      gsap.to(howSteps, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.how-it-works__steps',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
     // Services section
     var servicesHeader = document.querySelectorAll(
       '.services > .container > [data-stagger]'
@@ -381,6 +502,92 @@
         toggleActions: 'play none none none',
       },
     });
+
+    // Guarantee
+    var guarantee = document.querySelector('.guarantee');
+    if (guarantee) {
+      gsap.to(guarantee, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.guarantee',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // Testimonials section
+    var testimonialsHeaders = document.querySelectorAll(
+      '.testimonials > .container > [data-stagger]'
+    );
+    if (testimonialsHeaders.length) {
+      gsap.to(testimonialsHeaders, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.testimonials',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var testimonialCards = document.querySelectorAll('.testimonial-card');
+    if (testimonialCards.length) {
+      gsap.to(testimonialCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.testimonials__grid',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // FAQ section
+    var faqHeaders = document.querySelectorAll(
+      '.faq > .container > [data-stagger]'
+    );
+    if (faqHeaders.length) {
+      gsap.to(faqHeaders, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.faq',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var faqItems = document.querySelectorAll('.faq__item');
+    if (faqItems.length) {
+      gsap.to(faqItems, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.faq__list',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
     // Results section
     var resultsWords = document.querySelectorAll('.results__word');
@@ -474,7 +681,7 @@
 
     // CTA section
     var ctaElements = document.querySelectorAll(
-      '.cta-section [data-stagger], .cta-section .btn'
+      '.cta-section [data-stagger]'
     );
     gsap.to(ctaElements, {
       opacity: 1,
@@ -488,6 +695,22 @@
         toggleActions: 'play none none none',
       },
     });
+
+    // Calendly widget
+    var calendlyWidget = document.querySelector('.calendly-inline-widget');
+    if (calendlyWidget) {
+      gsap.to(calendlyWidget, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.calendly-inline-widget',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
   }
 
   /* --- Mouse Parallax (Hero Shapes) --- */
@@ -640,6 +863,8 @@
       initLenis();
       initCursor();
       initKineticTypography();
+      initStickyNav();
+      initFaqAccordion();
       initScrollAnimations();
       initParallax();
       initMicroInteractions();
