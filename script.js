@@ -291,6 +291,34 @@
     window.addEventListener('scroll', handleScroll, { passive: true });
   }
 
+  /* --- Smooth Anchor Scrolling --- */
+
+  function initSmoothAnchors() {
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        var targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        var targetEl = document.querySelector(targetId);
+        if (!targetEl) return;
+
+        e.preventDefault();
+
+        var navHeight = 80;
+        var targetPosition = targetEl.getBoundingClientRect().top + window.scrollY - navHeight;
+
+        if (state.lenis) {
+          state.lenis.scrollTo(targetPosition, { duration: 1.2 });
+        } else {
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth',
+          });
+        }
+      });
+    });
+  }
+
   /* --- FAQ Accordion --- */
 
   function initFaqAccordion() {
@@ -326,7 +354,39 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Metrics section
+    // --- Niche section ---
+    var nicheTrusted = document.querySelector('.niche__trusted');
+    if (nicheTrusted) {
+      gsap.to(nicheTrusted, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.niche',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var nicheCards = document.querySelectorAll('.niche-card');
+    if (nicheCards.length) {
+      gsap.to(nicheCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.niche__cards',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // --- Metrics section ---
     var metricsItems = document.querySelectorAll('.metrics__item');
     if (metricsItems.length) {
       gsap.to(metricsItems, {
@@ -343,165 +403,141 @@
       });
     }
 
-    // Problem section
-    var problemText = document.querySelectorAll(
-      '.problem__text [data-stagger]'
+    // --- Portfolio section ---
+    var portfolioHeaders = document.querySelectorAll(
+      '.portfolio > .container > [data-stagger]'
     );
-    gsap.to(problemText, {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.problem',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    var problemCards = document.querySelectorAll('.problem-card');
-    gsap.to(problemCards, {
-      opacity: 1,
-      x: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.problem__cards',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // Solution section
-    var solutionHeaders = document.querySelectorAll(
-      '.solution > .container > [data-stagger]'
-    );
-    gsap.to(solutionHeaders, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.solution',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    var solutionCards = document.querySelectorAll('.solution-card');
-    gsap.to(solutionCards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      stagger: 0.1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.solution__cards',
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // How It Works section
-    var howHeaders = document.querySelectorAll(
-      '.how-it-works > .container > [data-stagger]'
-    );
-    if (howHeaders.length) {
-      gsap.to(howHeaders, {
+    if (portfolioHeaders.length) {
+      gsap.to(portfolioHeaders, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         stagger: 0.15,
         ease: 'power2.out',
         scrollTrigger: {
-          trigger: '.how-it-works',
+          trigger: '.portfolio',
           start: 'top 75%',
           toggleActions: 'play none none none',
         },
       });
     }
 
-    var howSteps = document.querySelectorAll('.how-it-works__step');
-    if (howSteps.length) {
-      gsap.to(howSteps, {
+    var featuredCards = document.querySelectorAll('.portfolio__featured .video-card');
+    if (featuredCards.length) {
+      gsap.to(featuredCards, {
         opacity: 1,
         y: 0,
         duration: 0.7,
-        stagger: 0.2,
+        stagger: 0.12,
         ease: 'power2.out',
         scrollTrigger: {
-          trigger: '.how-it-works__steps',
+          trigger: '.portfolio__featured',
           start: 'top 78%',
           toggleActions: 'play none none none',
         },
       });
     }
 
-    // Services section
-    var servicesHeader = document.querySelectorAll(
-      '.services > .container > [data-stagger]'
+    var moreLabel = document.querySelector('.portfolio__more-label');
+    if (moreLabel) {
+      gsap.to(moreLabel, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.portfolio__more-label',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var portfolioCards = document.querySelectorAll('.portfolio__grid .video-card');
+    if (portfolioCards.length) {
+      gsap.to(portfolioCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.portfolio__grid',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // --- Outcomes section ---
+    var outcomesHeaders = document.querySelectorAll(
+      '.outcomes > .container > [data-stagger]'
     );
-    gsap.to(servicesHeader, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.services',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
+    if (outcomesHeaders.length) {
+      gsap.to(outcomesHeaders, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.outcomes',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
-    var serviceCards = document.querySelectorAll('.service-card');
-    gsap.to(serviceCards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      stagger: 0.1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.services__cards',
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    });
+    var outcomeCards = document.querySelectorAll('.outcome-card');
+    if (outcomeCards.length) {
+      gsap.to(outcomeCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.outcomes__cards',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
-    // Pricing section
+    // --- Pricing section ---
     var pricingHeader = document.querySelectorAll(
       '.pricing > .container > [data-stagger]'
     );
-    gsap.to(pricingHeader, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.pricing',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
+    if (pricingHeader.length) {
+      gsap.to(pricingHeader, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.pricing',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
     var pricingCards = document.querySelectorAll('.pricing-card');
-    gsap.to(pricingCards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.pricing__cards',
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    });
+    if (pricingCards.length) {
+      gsap.to(pricingCards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.pricing__cards',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
     // Guarantee
     var guarantee = document.querySelector('.guarantee');
@@ -519,7 +555,7 @@
       });
     }
 
-    // Testimonials section
+    // --- Testimonials section ---
     var testimonialsHeaders = document.querySelectorAll(
       '.testimonials > .container > [data-stagger]'
     );
@@ -554,7 +590,42 @@
       });
     }
 
-    // FAQ section
+    // --- Founder section ---
+    var founderHeaders = document.querySelectorAll(
+      '.founder > .container > [data-stagger]'
+    );
+    if (founderHeaders.length) {
+      gsap.to(founderHeaders, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.founder',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var founderContent = document.querySelectorAll('.founder__content [data-stagger]');
+    if (founderContent.length) {
+      gsap.to(founderContent, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.founder__content',
+          start: 'top 78%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // --- FAQ section ---
     var faqHeaders = document.querySelectorAll(
       '.faq > .container > [data-stagger]'
     );
@@ -589,124 +660,94 @@
       });
     }
 
-    // Results section
-    var resultsWords = document.querySelectorAll('.results__word');
-    gsap.to(resultsWords, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.12,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.results',
-        start: 'top 70%',
-        toggleActions: 'play none none none',
-      },
-    });
+    // --- Audit / Lead Magnet section ---
+    var auditText = document.querySelectorAll('.audit__text [data-stagger]');
+    if (auditText.length) {
+      gsap.to(auditText, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.audit',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
 
-    var resultsSub = document.querySelector('.results__sub');
-    gsap.to(resultsSub, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.results__sub',
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // Portfolio section
-    var portfolioHeaders = document.querySelectorAll(
-      '.portfolio > .container > [data-stagger]'
-    );
-    gsap.to(portfolioHeaders, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.portfolio',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    var portfolioCards = document.querySelectorAll('.portfolio__grid .video-card');
-    gsap.to(portfolioCards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.portfolio__grid',
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // Demos section
-    var demosHeaders = document.querySelectorAll(
-      '.demos > .container > [data-stagger]'
-    );
-    gsap.to(demosHeaders, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.demos',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    var demoCards = document.querySelectorAll('.demos__grid .video-card');
-    gsap.to(demoCards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.demos__grid',
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // CTA section
-    var ctaElements = document.querySelectorAll(
-      '.cta-section [data-stagger]'
-    );
-    gsap.to(ctaElements, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.cta-section',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    // Calendly widget
-    var calendlyWidget = document.querySelector('.calendly-inline-widget');
-    if (calendlyWidget) {
-      gsap.to(calendlyWidget, {
+    var auditCalendly = document.querySelector('.audit__calendly-wrapper');
+    if (auditCalendly) {
+      gsap.to(auditCalendly, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: 'power2.out',
         scrollTrigger: {
-          trigger: '.calendly-inline-widget',
+          trigger: '.audit__calendly-wrapper',
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // --- CTA section ---
+    var ctaHeadline = document.querySelector('.cta-section__headline');
+    if (ctaHeadline) {
+      gsap.to(ctaHeadline, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.cta-section',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var ctaChecklist = document.querySelector('.cta-section__checklist');
+    if (ctaChecklist) {
+      gsap.to(ctaChecklist, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.cta-section__checklist',
           start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var ctaSub = document.querySelector('.cta-section__sub');
+    if (ctaSub) {
+      gsap.to(ctaSub, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.cta-section__sub',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    var ctaBtn = document.querySelector('.cta-section__btn');
+    if (ctaBtn) {
+      gsap.to(ctaBtn, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.cta-section__btn',
+          start: 'top 90%',
           toggleActions: 'play none none none',
         },
       });
@@ -864,6 +905,7 @@
       initCursor();
       initKineticTypography();
       initStickyNav();
+      initSmoothAnchors();
       initFaqAccordion();
       initScrollAnimations();
       initParallax();
