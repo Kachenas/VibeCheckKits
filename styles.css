@@ -374,6 +374,16 @@ strong {
   font-size: var(--fs-label);
 }
 
+/* Logo: full by default, short hidden */
+.site-header__logo-short {
+  display: none;
+}
+
+/* Mobile floating CTA — hidden on desktop */
+.mobile-float-cta {
+  display: none;
+}
+
 /* --- Section Dividers (gradient) --- */
 .niche,
 .portfolio,
@@ -1873,6 +1883,39 @@ strong {
 
   .site-header__container {
     justify-content: space-between;
+  }
+
+  /* Logo: show short, hide full */
+  .site-header__logo-full {
+    display: none;
+  }
+
+  .site-header__logo-short {
+    display: inline;
+  }
+
+  /* Hide header CTA on mobile */
+  .site-header__cta {
+    display: none;
+  }
+
+  /* Mobile floating CTA */
+  .mobile-float-cta {
+    display: block;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    padding: 0.85rem 2rem;
+    width: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: floatPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes floatPulse {
+    0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 8px 40px rgba(100, 180, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.3); }
   }
 
   /* Founder responsive */
