@@ -264,31 +264,16 @@
   /* --- Sticky Nav --- */
 
   function initStickyNav() {
-    var nav = document.getElementById('stickyNav');
-    if (!nav) return;
+    var header = document.getElementById('site-header');
+    if (!header) return;
 
-    var lastScrollY = 0;
-    var scrollThreshold = 100;
-
-    function handleScroll() {
-      var currentScrollY = window.scrollY;
-
-      if (currentScrollY > scrollThreshold) {
-        if (currentScrollY > lastScrollY) {
-          // Scrolling down — hide
-          nav.classList.add('nav--hidden');
-        } else {
-          // Scrolling up — show
-          nav.classList.remove('nav--hidden');
-        }
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
       } else {
-        nav.classList.remove('nav--hidden');
+        header.classList.remove('scrolled');
       }
-
-      lastScrollY = currentScrollY;
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    }, { passive: true });
   }
 
   /* --- Smooth Anchor Scrolling --- */
